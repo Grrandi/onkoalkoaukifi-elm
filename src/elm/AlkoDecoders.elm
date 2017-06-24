@@ -21,7 +21,6 @@ decodeStore =
       (Decode.at ["OpenDay0"] Decode.string)
 
 
-
 decodeCount : Decode.Decoder Stores
 decodeCount =
   Decode.map2 Stores
