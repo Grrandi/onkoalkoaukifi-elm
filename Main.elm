@@ -8,7 +8,6 @@ import Http
 import Json.Decode as Decode
 
 
-
 main =
   Html.program
     { init = init
@@ -17,46 +16,66 @@ main =
     , subscriptions = subscriptions
     }
 
-
-
 -- MODEL
 
 type alias Stores = {open: Int, closed: Int}
 
-type alias StoreInfos = {name: String, openHours: String}
+type alias StoreInfos =
+  { name: String
+  , city: String
+  , latitude: Float
+  , longitude: Float
+  , phone: String
+  , postalCode: String
+  , address: String
+  , openHours: String
+  }
 
 type alias Model =
-  { closedCount : Int
-  , openCount : Int
+  { openCount : Int
+  , totalCount : Int
+  , error : Maybe Http.Error
+  , openStores : Maybe (List StoreInfos)
   }
 
 
 init : (Model, Cmd Msg)
 init =
-  ( Model 0 0
-  , getOpenAlkos
+  ( Model 0 0 Nothing Nothing
+  , Cmd.batch [getOpenAlkos, getOpenAlkoInfo]
   )
-
-
 
 -- UPDATE
 
-
 type Msg
   = GotCount (Result Http.Error Stores)
+  | GotInfo (Result Http.Error (List StoreInfos))
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
-
     GotCount (Ok res) ->
-      (Model res.open res.closed, Cmd.none)
-
+      (Model res.open res.closed Nothing model.openStores, Cmd.none)
     GotCount (Err er) ->
       (model, Cmd.none)
 
+    GotInfo result ->
+      case result of
+        Ok stores ->
+          ({model | openStores = Just stores}, Cmd.none)
+        Err e ->
+          ({model | error = Just e}, Cmd.none)
 
+
+
+openPercentage: Int -> Int -> Float
+openPercentage open total =
+  case open of
+    0 ->
+      0
+    _ ->
+      toFloat total / toFloat open
 
 -- VIEW
 
@@ -64,9 +83,24 @@ update msg model =
 view : Model -> Html Msg
 view model =
   div []
-    [ h2 [] [text <| toString model]
+    [ h2 [] [text "Onko alko auki?!"]
     , br [] []
+    , p []
+      [ span [] [text "Alkoja auki: "]
+      , span [] [text <| toString model.openCount]]
+      , br [] []
+      , span [] [text "Alkoja kiinni: "]
+      , span [] [text <| toString (model.totalCount - model.openCount)]
+    , div []
+      [ p []
+        [ span [] [text "Prosenttia auki: "]
+        , span [] [text <| toString <| openPercentage model.openCount model.totalCount]]
+
+      ]
     ]
+
+
+
 
 
 
@@ -85,9 +119,15 @@ getOpenAlkoInfo : Cmd Msg
 getOpenAlkoInfo =
     let
         url =
+          --"https://gist.githubusercontent.com/Grrandi/4a819a79ee4ab3d5b75a6f08a826fa96/raw/8a93ec5557f21fe510e81300c9a07ea8c4d4f617/object.json"
           "http://localhost:5000/open_stores"
     in
-        Http.send GotInfo (Http.get url decodeInfo)
+        Http.send GotInfo fuufaa
+
+
+fuufaa : Http.Request (List StoreInfos)
+fuufaa =
+    Http.get "http://localhost:5000/open_stores" decodeStores
 
 getOpenAlkos : Cmd Msg
 getOpenAlkos =
@@ -98,16 +138,27 @@ getOpenAlkos =
   in
     Http.send GotCount (Http.get url decodeCount)
 
+decodeStores : Decode.Decoder (List StoreInfos)
+decodeStores =
+    Decode.at ["shoppens"] (Decode.list decodeStore)
 
-decodeInfo : Decode.Decoder
+decodeStore : Decode.Decoder StoreInfos
+decodeStore =
+    Decode.map8
+      StoreInfos
+      (Decode.at ["name"] Decode.string)
+      (Decode.at ["city"] Decode.string)
+      (Decode.at ["latitude"] Decode.float)
+      (Decode.at ["longitude"] Decode.float)
+      (Decode.at ["phone"] Decode.string)
+      (Decode.at ["postalCode"] Decode.string)
+      (Decode.at ["address"] Decode.string)
+      (Decode.at ["OpenDay0"] Decode.string)
+
 
 
 decodeCount : Decode.Decoder Stores
 decodeCount =
   Decode.map2 Stores
     (Decode.field "open" Decode.int)
-    (Decode.field "closed" Decode.int)
-
-decodeGifUrl : Decode.Decoder String
-decodeGifUrl =
-  Decode.at ["data", "image_url"] Decode.string
+    (Decode.field "total" Decode.int)
