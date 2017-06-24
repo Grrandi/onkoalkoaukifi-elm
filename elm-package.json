@@ -1,7 +1,7 @@
 {
     "version": "1.0.0",
     "summary": "Onko alko auki? elm application",
-    "repository": "https://github.com/Grrandi/onkoalkoauki.fi.git",
+    "repository": "https://github.com/Grrandi/onkoalkoaukifi.git",
     "license": "MIT",
     "source-directories": [
         "src/elm"

@@ -6,7 +6,7 @@
   "author": "Matti Pohjanvirta",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Grrandi/onkoalkoauki.fi"
+    "url": "https://github.com/Grrandi/onkoalkoaukifi"
   },
   "scripts": {
     "start": "webpack-dev-server --hot --inline",
