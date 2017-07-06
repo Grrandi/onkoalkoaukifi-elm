@@ -1,7 +1,7 @@
 module View exposing (view)
 
 import Types exposing (..)
-import Html exposing (div, p, span, text, Html, h2, br)
+import Html exposing (div, p, span, text, Html, h2, br, h4)
 import Html.Attributes as Attributes
 
 
@@ -39,6 +39,21 @@ percentageText percent =
       [ p [] [text "Dunno lol"]
       ]
 
+alkoListItem: StoreInfos -> Html Msg
+alkoListItem item =
+  div [Attributes.class "list-group-item"]
+    [ h4 [Attributes.class "list-group-item-heading" ] [text item.name]
+    , p [] [text item.openHours]
+    , p [] [text item.address]
+    , p [] [text item.postalCode]
+    , p [] [text item.city]]
+
+alkoList: Maybe (List StoreInfos) -> List (Html Msg)
+alkoList stores =
+  case stores of
+    Just stores -> List.map alkoListItem stores
+    Nothing -> []
+
 alkojaAuki: Int -> String
 alkojaAuki c =
     if c>0 then
@@ -64,7 +79,8 @@ view model =
       [ p []
         [ span [] [text "Prosenttia auki: "]
         , span [] [text <| toString <| openPercentage model.openCount model.totalCount]]
-
       ]
     , percentageText <| openPercentage model.openCount model.totalCount
+    , div [Attributes.class "open-stores list-group"]
+      <| alkoList model.openStores
     ]
