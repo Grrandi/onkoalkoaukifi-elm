@@ -39,13 +39,20 @@ percentageText percent =
       [ p [] [text "Dunno lol"]
       ]
 
+alkojaAuki: Int -> String
+alkojaAuki c =
+    if c>0 then
+      "ON!"
+    else
+      "Ei oo :'("
+
 -- VIEW
 
 
 view : Model -> Html Msg
 view model =
   div [ Attributes.class "app-container"]
-    [ h2 [] [text "Onko alko auki?!"]
+    [ h2 [] [text <| alkojaAuki model.openCount]
     , br [] []
     , p []
       [ span [] [text "Alkoja auki: "]
