@@ -16,17 +16,34 @@ body {
 .vertical-align {
   display: flex;
   align-items: center;
-  margin-top: 30%;
+  margin-top: 10%;
 }
 
 .app-container {
-  p, h2, span {
+  p, h2, span, h4, h3 {
     text-align: center;
+  }
+  h2 {
+    font-size: 60px;
   }
 }
 
 .header {
+  margin-top: 5%;
   h1 {
     text-align: center;
+    font-size: 60px;
+  }
+}
+
+.list-group {
+  margin-left: 20%;
+  margin-right: 20%;
+  .list-group-item {
+    .list-group-item-body {
+      p {
+        margin: 0 0 0 0;
+      }
+    }
   }
 }

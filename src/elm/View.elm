@@ -1,7 +1,7 @@
 module View exposing (view)
 
 import Types exposing (..)
-import Html exposing (div, p, span, text, Html, h2, br, h4)
+import Html exposing (div, p, span, text, Html, h2, br, h4, h3)
 import Html.Attributes as Attributes
 
 
@@ -20,15 +20,15 @@ percentageText: Float -> Html Msg
 percentageText percent =
   if percent <= 0 then
     div []
-      [ p [] [text "Lol, kaikki kiinni. Too lates"]
+      [ p [] [text "Onneksi huomenna on uusi päivä"]
       ]
-  else if percent <= 5 then
+  else if percent <= 20 then
     div []
       [ p [] [text "Nyt mahtaapi olla jo aikamoinen kiire"]
       ]
   else if percent <= 50 then
     div []
-      [ p [] [text "Kohta taitaapi olla kiire"]
+      [ p [] [text "Ettei vaan tulisi kiire"]
       ]
   else if percent <= 90 then
     div []
@@ -36,17 +36,19 @@ percentageText percent =
       ]
   else
     div []
-      [ p [] [text "Dunno lol"]
+      [ p [] [text "Kaikki auki!"]
       ]
 
 alkoListItem: StoreInfos -> Html Msg
 alkoListItem item =
   div [Attributes.class "list-group-item"]
     [ h4 [Attributes.class "list-group-item-heading" ] [text item.name]
-    , p [] [text item.openHours]
-    , p [] [text item.address]
-    , p [] [text item.postalCode]
-    , p [] [text item.city]]
+    , div [Attributes.class "list-group-item-body"]
+      [ p [] [text item.openHours]
+      , p [] [text item.address]
+      , p [] [text item.postalCode]
+      , p [] [text item.city]]
+    ]
 
 alkoList: Maybe (List StoreInfos) -> List (Html Msg)
 alkoList stores =
@@ -68,19 +70,26 @@ view : Model -> Html Msg
 view model =
   div [ Attributes.class "app-container"]
     [ h2 [] [text <| alkojaAuki model.openCount]
-    , br [] []
-    , p []
-      [ span [] [text "Alkoja auki: "]
-      , span [] [text <| toString model.openCount]]
-    , p []
-      [ span [] [text "Alkoja kiinni: "]
-      , span [] [text <| toString (model.totalCount - model.openCount)]]
-    , div []
-      [ p []
-        [ span [] [text "Prosenttia auki: "]
-        , span [] [text <| toString <| openPercentage model.openCount model.totalCount]]
-      ]
     , percentageText <| openPercentage model.openCount model.totalCount
+    , br [] []
+--    , p []
+--      [ span [] [text "Alkoja auki: "]
+--      , span [] [text <| toString model.openCount]
+--      ]
+--    , p []
+--      [ span [] [text "Alkoja kiinni: "]
+--      , span [] [text <| toString (model.totalCount - model.openCount)]
+--      ]
+--    , div []
+--      [ p []
+--        [ span [] [text "Alkoista nyt "]
+--        , span [] [text <| toString <| openPercentage model.openCount model.totalCount]
+--        , span [] [text "% auki"]
+--        ]
+--      ]
+    , div []
+      [ h3 [] [text "Tällä hetkellä auki olevat alkot:"]
+      ]
     , div [Attributes.class "open-stores list-group"]
       <| alkoList model.openStores
     ]
