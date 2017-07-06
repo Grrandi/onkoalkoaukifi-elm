@@ -31,7 +31,11 @@ var commonConfig = {
     noParse: /\.elm$/,
     loaders: [
       {
-        test: /\.(eot|ttf|woff|woff2|svg)$/,
+        test: /\.(eot|ttf|woff|woff2)$/,
+        loader: 'file-loader'
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
         loader: 'file-loader'
       }
     ]
@@ -79,7 +83,8 @@ if ( TARGET_ENV === 'development' ) {
             'style-loader',
             'css-loader',
             'postcss-loader',
-            'sass-loader'
+            'resolve-url-loader',
+            'sass-loader?sourceMap'
           ]
         }
       ]
