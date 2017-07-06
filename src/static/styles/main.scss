@@ -12,3 +12,21 @@ body {
   background-size: cover;
   background-color: #fff;
 }
+
+.vertical-align {
+  display: flex;
+  align-items: center;
+  margin-top: 30%;
+}
+
+.app-container {
+  p, h2, span {
+    text-align: center;
+  }
+}
+
+.header {
+  h1 {
+    text-align: center;
+  }
+}

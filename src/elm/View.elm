@@ -2,6 +2,7 @@ module View exposing (view)
 
 import Types exposing (..)
 import Html exposing (div, p, span, text, Html, h2, br)
+import Html.Attributes as Attributes
 
 
 
@@ -43,15 +44,15 @@ percentageText percent =
 
 view : Model -> Html Msg
 view model =
-  div []
+  div [ Attributes.class "app-container"]
     [ h2 [] [text "Onko alko auki?!"]
     , br [] []
     , p []
       [ span [] [text "Alkoja auki: "]
       , span [] [text <| toString model.openCount]]
-      , br [] []
-      , span [] [text "Alkoja kiinni: "]
-      , span [] [text <| toString (model.totalCount - model.openCount)]
+    , p []
+      [ span [] [text "Alkoja kiinni: "]
+      , span [] [text <| toString (model.totalCount - model.openCount)]]
     , div []
       [ p []
         [ span [] [text "Prosenttia auki: "]
