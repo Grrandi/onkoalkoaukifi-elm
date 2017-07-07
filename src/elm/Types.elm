@@ -1,6 +1,7 @@
 module Types exposing (..)
 
 import Http
+import Geolocation exposing (Location)
 
 type alias Stores = {open: Int, closed: Int}
 
@@ -20,8 +21,10 @@ type alias Model =
   , totalCount : Int
   , error : Maybe Http.Error
   , openStores : Maybe (List StoreInfos)
+  , userLocation : Result Geolocation.Error (Maybe Location)
   }
 
 type Msg
   = GotCount (Result Http.Error Stores)
   | GotInfo (Result Http.Error (List StoreInfos))
+  | GotGeoloc (Result Geolocation.Error Location)
