@@ -16,28 +16,20 @@ openPercentage open total =
     _ ->
       (*) 100 <| toFloat open / toFloat total
 
-percentageText: Float -> Html Msg
+percentageText: Float -> String
 percentageText percent =
   if percent <= 0 then
-    div []
-      [ p [] [text "Onneksi huomenna on uusi päivä"]
-      ]
+    "Onneksi huomenna on uusi päivä"
   else if percent <= 20 then
-    div []
-      [ p [] [text "Nyt mahtaapi olla jo aikamoinen kiire"]
-      ]
+    "Nyt mahtaapi olla jo aikamoinen kiire"
   else if percent <= 50 then
-    div []
-      [ p [] [text "Ettei vaan tulisi kiire"]
-      ]
-  else if percent <= 90 then
-    div []
-      [ p [] [text "Ei mitään hätiä"]
-      ]
+    "Ettei vaan tulisi kiire"
+  else if percent <= 93 then
+    "Ei mitään hätiä"
+  else if percent == 100 then
+    "Kaikki auki!"
   else
-    div []
-      [ p [] [text "Kaikki auki!"]
-      ]
+    "dunno lol!"
 
 alkoListItem: StoreInfos -> Html Msg
 alkoListItem item =
@@ -70,7 +62,9 @@ view : Model -> Html Msg
 view model =
   div [ Attributes.class "app-container"]
     [ h2 [] [text <| alkojaAuki model.openCount]
-    , percentageText <| openPercentage model.openCount model.totalCount
+    , div []
+      [ p [] [text <| percentageText <| openPercentage model.openCount model.totalCount]
+      ]
     , br [] []
 --    , p []
 --      [ span [] [text "Alkoja auki: "]
