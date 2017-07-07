@@ -3,7 +3,7 @@ module View exposing (view)
 import Types exposing (..)
 import Html exposing (div, p, span, text, Html, h2, br, h4, h3)
 import Html.Attributes as Attributes
-
+import App exposing (recurseMF)
 
 
 -- VIEW FUNCTIONS
@@ -86,4 +86,5 @@ view model =
       ]
     , div [Attributes.class "open-stores list-group"]
       <| alkoList model.openStores
+    , div [] [text <| toString <| recurseMF 99999.0 (StoreInfos "" "" 0.0 0.0 "" "" "" "") model.userLocation model.openStores]
     ]
