@@ -82,7 +82,7 @@ view model =
 --        ]
 --      ]
     , div []
-      [ h3 [] [text "Tällä hetkellä auki olevat alkot:"]
+      [ h3 [] [text "Lähin auki oleva Alko:"]
       ]
     , div [Attributes.class "open-stores list-group"]
       <| alkoList <| deconstructResultsAndMaybes 99999.0 (StoreInfos "" "" 0.0 0.0 "" "" "" "") model.userLocation model.openStores
