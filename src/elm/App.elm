@@ -117,12 +117,16 @@ recurseMF previousMin previousStore userLoc stores =
 
 deconstructResultsAndMaybes: Float -> StoreInfos -> Result Geolocation.Error (Maybe Geolocation.Location) -> Maybe (List StoreInfos) -> Maybe (List StoreInfos)
 deconstructResultsAndMaybes previousMin previousStore userLoc stores =
-  case userLoc of
-    Err err -> stores
-    Ok loc ->
-      case loc of
-        Just loc ->
-          case stores of
-            Just stores -> Just [recurseMF previousMin previousStore loc stores]
-            Nothing -> stores
-        Nothing -> stores
+  case stores of
+    Just stores ->
+      if not (List.isEmpty stores) then
+        case userLoc of
+          Err err -> Nothing
+          Ok loc ->
+            case loc of
+              Just loc ->
+                Just [recurseMF previousMin previousStore loc stores]
+              Nothing -> Nothing
+      else
+        Nothing
+    Nothing -> Nothing

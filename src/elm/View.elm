@@ -38,14 +38,18 @@ alkoListItem item =
     , div [Attributes.class "list-group-item-body"]
       [ p [] [text item.openHours]
       , p [] [text item.address]
-      , p [] [text item.postalCode]
-      , p [] [text item.city]]
+      , p [] [ text <| String.join " " [item.postalCode, item.city] ]
+      ]
     ]
 
 alkoList: Maybe (List StoreInfos) -> List (Html Msg)
 alkoList stores =
   case stores of
-    Just stores -> List.map alkoListItem stores
+    Just stores ->
+      if List.isEmpty stores then
+        [ div [] [] ]
+      else
+        List.map alkoListItem stores
     Nothing -> []
 
 alkojaAuki: Int -> String
@@ -54,6 +58,22 @@ alkojaAuki c =
       "ON!"
     else
       "Ei oo :'("
+
+closestAlko: Model -> Html Msg
+closestAlko model =
+  case model.userLocation of
+    Ok val ->
+      case val of
+        Just vval ->
+          div []
+            [ div [] [ h3 [] [text "Lähin avoin Alko:" ] ]
+            , div [Attributes.class "open-stores list-group"]
+              <| alkoList <| deconstructResultsAndMaybes 99999.0 (StoreInfos "" "" 0.0 0.0 "" "" "" "") model.userLocation model.openStores]
+        Nothing ->
+          div [] []
+    Err err ->
+      div [] []
+
 
 -- VIEW
 
@@ -66,25 +86,5 @@ view model =
       [ p [] [text <| percentageText <| openPercentage model.openCount model.totalCount]
       ]
     , br [] []
---    , p []
---      [ span [] [text "Alkoja auki: "]
---      , span [] [text <| toString model.openCount]
---      ]
---    , p []
---      [ span [] [text "Alkoja kiinni: "]
---      , span [] [text <| toString (model.totalCount - model.openCount)]
---      ]
---    , div []
---      [ p []
---        [ span [] [text "Alkoista nyt "]
---        , span [] [text <| toString <| openPercentage model.openCount model.totalCount]
---        , span [] [text "% auki"]
---        ]
---      ]
-    , div []
-      [ h3 [] [text "Lähin auki oleva Alko:"]
-      ]
-    , div [Attributes.class "open-stores list-group"]
-      <| alkoList <| deconstructResultsAndMaybes 99999.0 (StoreInfos "" "" 0.0 0.0 "" "" "" "") model.userLocation model.openStores
-
+    , closestAlko model
     ]

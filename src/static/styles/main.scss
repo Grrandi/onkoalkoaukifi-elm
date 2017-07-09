@@ -25,7 +25,7 @@ body {
   }
   h2 {
     font-size: 60px;
-    text-shadow: -2px 0 grey, 0 2px grey, 2px 0 grey, 0 -2px grey;
+    //text-shadow: -2px 0 grey, 0 2px grey, 2px 0 grey, 0 -2px grey;
   }
 }
 
@@ -34,9 +34,20 @@ body {
   h1 {
     text-align: center;
     font-size: 60px;
-    text-shadow: -2px 0 grey, 0 2px grey, 2px 0 grey, 0 -2px grey;
+    //text-shadow: -2px 0 grey, 0 2px grey, 2px 0 grey, 0 -2px grey;
   }
 }
+
+.open-yes {
+  background: url('../img/alkoOnAuki.png');
+  height: 200px;
+  align-items: center;
+}
+
+//.closed-no {
+//  background: url('../img/eiValitettavasti.png');
+//  height: 200px;
+//}
 
 .list-group {
   margin-left: 20%;
