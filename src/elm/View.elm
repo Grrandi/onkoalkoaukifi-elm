@@ -25,7 +25,7 @@ percentageText percent =
   else if percent <= 50 then
     "Ettei vaan tulisi kiire"
   else if percent <= 93 then
-    "Ei mitään hätiä"
+    "Ei mitään hätää"
   else if percent == 100 then
     "Kaikki auki!"
   else
